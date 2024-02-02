@@ -30,6 +30,7 @@ export async function handleFileOpen() {
       const homeDir = os.homedir();
       const csvPath = `${homeDir}/Desktop/` + fileName + `./2C Work-2C WORK.csv`
       const jsonData = await csvReader(csvPath)
+      deleteFolder(`${homeDir}/Desktop/` + fileName + `.`)
       return jsonData
     }
 }
@@ -67,4 +68,8 @@ function formatToJSON(data: string[]) {
     }
   }
   return json
+}
+
+async function deleteFolder(path: string) {
+  fs.rm(path, { recursive: true }, () => {})
 }
