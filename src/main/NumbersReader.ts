@@ -10,9 +10,12 @@ export async function handleFileOpen() {
     if (!canceled) {
       // export to csv
       const filePath = filePaths[0]
+      const fileType = filePath.split(".").pop()
+      if (fileType === "csv") {
+        const jsonData = await csvReader(filePath)
+        return jsonData
+      }
       const fileName = filePath.split("/").pop()?.replace(".numbers", "")
-      // const folderPath = array.join(":")
-      //--set myFolder to alias "` + folderPath + ":" + `"
       await runAppleScript(`
     tell application "Finder" to set myFolder to path to desktop
     tell application "Numbers"
@@ -26,7 +29,6 @@ export async function handleFileOpen() {
       export front document to file exportName as CSV
       close aDoc
     end tell`)
-    
       const homeDir = os.homedir();
       const csvPath = `${homeDir}/Desktop/` + fileName + `./2C Work-2C WORK.csv`
       const jsonData = await csvReader(csvPath)
