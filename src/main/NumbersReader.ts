@@ -34,6 +34,8 @@ export async function handleFileOpen() {
       const jsonData = await csvReader(csvPath)
       deleteFolder(`${homeDir}/Desktop/` + fileName + `.`)
       return jsonData
+    } else {
+      return false
     }
 }
 

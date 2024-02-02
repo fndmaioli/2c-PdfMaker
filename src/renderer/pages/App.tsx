@@ -9,14 +9,16 @@ import Spinner from '../components/Spinner'
 function App() {
     const [clientsData, setData] = useState(Array<Client>())
     const [clientsList, setList] = useState(Array<string>())
-    const [client, setClient] = useState({} as Client)
+    const [client, setClient] = useState(null)
     const [isLoading, setLoading] = useState(false)
 
     const handleSelectFile = async () => {
       setLoading(true)
       const data = await window.electronAPI.openFile() as unknown as Client[]
-      setList(data.map((client) => {return client.name}))
-      setData(data)
+      if(data) {
+        setList(data.map((client) => {return client.name}))
+        setData(data)
+      }
       setLoading(false)
     }
   
@@ -30,8 +32,10 @@ function App() {
     }
   
     const handleMakePDF = async () => {
-      const result = await window.electronAPI.makePDF(client)
-      console.log(result)
+      if(client !== null) {
+        const result = await window.electronAPI.makePDF(client)
+        console.log(result)
+      }
     }
   
     const imgStyle = {
