@@ -1,0 +1,18 @@
+.spinner {
+    display: 'flex';
+    align-items: 'center';
+    justify-content: 'center';
+    margin-top: 20%;
+    scale: 80%;
+}
+
+.rectangle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: auto;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.500);
+}

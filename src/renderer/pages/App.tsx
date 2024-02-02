@@ -4,16 +4,20 @@ import Button from '../components/Button'
 import ClientListSelect from '../components/ClientListSelect'
 import { Client, Post } from '../../utils/interfaces'
 import logo from '../../public/2c-logo.png'
+import Spinner from '../components/Spinner'
 
 function App() {
     const [clientsData, setData] = useState(Array<Client>())
     const [clientsList, setList] = useState(Array<string>())
     const [client, setClient] = useState({} as Client)
-  
+    const [isLoading, setLoading] = useState(false)
+
     const handleSelectFile = async () => {
+      setLoading(true)
       const data = await window.electronAPI.openFile() as unknown as Client[]
       setList(data.map((client) => {return client.name}))
       setData(data)
+      setLoading(false)
     }
   
     const didChangeSelected = (selected: string) => {
@@ -38,6 +42,7 @@ function App() {
   
     return (
       <>
+        { isLoading ? <Spinner/> : null }
         <div>
           <img style={imgStyle} src={logo}/>
         </div>
