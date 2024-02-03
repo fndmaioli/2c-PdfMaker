@@ -6,37 +6,37 @@ import { runAppleScript } from 'run-applescript';
 import { dialog } from 'electron';
 
 export async function handleFileOpen() {
-    const { canceled, filePaths } = await dialog.showOpenDialog({})
-    if (!canceled) {
-      // export to csv
-      const filePath = filePaths[0]
-      const fileType = filePath.split(".").pop()
-      if (fileType === "csv") {
-        const jsonData = await csvReader(filePath)
-        return jsonData
-      }
-      const fileName = filePath.split("/").pop()?.replace(".numbers", "")
-      await runAppleScript(`
-    tell application "Finder" to set myFolder to path to desktop
-    tell application "Numbers"
-      launch
-      open "` + filePath + `"
-      set aDoc to front document
-      set docName to aDoc's name as text
-      set exportName to (myFolder as text) & docName
-      set exportName to exportName's text 1 thru -8
-      --set exportName to (exportName & "csv")
-      export front document to file exportName as CSV
-      close aDoc
-    end tell`)
-      const homeDir = os.homedir();
-      const csvPath = `${homeDir}/Desktop/` + fileName + `./2C Work-2C WORK.csv`
-      const jsonData = await csvReader(csvPath)
-      deleteFolder(`${homeDir}/Desktop/` + fileName + `.`)
+  const { canceled, filePaths } = await dialog.showOpenDialog({})
+  if (!canceled) {
+    // export to csv
+    const filePath = filePaths[0]
+    const fileType = filePath.split(".").pop()
+    if (fileType === "csv") {
+      const jsonData = await csvReader(filePath)
       return jsonData
-    } else {
-      return false
     }
+    const fileName = filePath.split("/").pop()?.replace(".numbers", "")
+          await runAppleScript(`
+  tell application "Finder" to set myFolder to path to desktop
+  tell application "Numbers"
+    launch
+    open "` + filePath + `"
+    set aDoc to front document
+    set docName to aDoc's name as text
+    set exportName to (myFolder as text) & docName
+    set exportName to exportName's text 1 thru -8
+    --set exportName to (exportName & "csv")
+    export front document to file exportName as CSV
+    close aDoc
+  end tell`)
+        const homeDir = os.homedir();
+    const csvPath = `${homeDir}/Desktop/` + fileName + `./2C Work-2C WORK.csv`
+    const jsonData = await csvReader(csvPath)
+    deleteFolder(`${homeDir}/Desktop/` + fileName + `.`)
+    return jsonData
+  } else {
+    return false
+  }
 }
 
 async function csvReader(path: string) {
