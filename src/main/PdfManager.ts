@@ -1,11 +1,12 @@
 import pdfDocument from 'pdfkit'
 import * as fs from 'fs';
 import os from 'node:os'
+import path from 'node:path'
 import { Client, Post } from '../utils/interfaces';
 
 export async function handleMakePDF(client: Client) {
     const homeDir = os.homedir();
-    const pdfPath = `${homeDir}/Desktop/` + client.name + `.pdf`
+    const pdfPath = path.join(homeDir, 'Desktop', client.name + '.pdf')
     await makePDF(pdfPath, client)
     return "pdf has been made successfully"
 }
